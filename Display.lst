@@ -1,0 +1,81 @@
+CCS PCM C Compiler, Version 4.104, 5967               03-dic.-18 13:16
+
+               Filename: C:\Users\beawu\Desktop\PROYECTO ENSAMBLADOR\Display.lst
+
+               ROM used: 33 words (0%)
+                         Largest free fragment is 2048
+               RAM used: 7 (2%) at main() level
+                         7 (2%) worst case
+               Stack:    0 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   004
+0003:  NOP
+.................... #INCLUDE <16F877A.H>//DECLARACIÓN DEL MICROCONTROLADOR A USAR  
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #USE  DELAY  (CLOCK=4000000)//DECLARACIÓN  DEL CRISTAL 
+.................... #FUSES XT,NOWDT,PUT,NOLVP,NOBROWNOUT,NOWRT,NOPROTECT 
+....................  
+.................... #BYTE TRISA = 0X85 //SE IMPLEMENTA UN ALIAS,APODO, SUDONIMO, A LA DIRECCIÓN 0X85 
+.................... #BYTE PORTA = 0X05 
+.................... #BYTE TRISB = 0X86 
+.................... #BYTE PORTB = 0X06 
+....................  
+.................... INT CONT=0;// ENTERO --> 8 BITS--> 2 ELEVADO 8 = 256 --> 0 - 255 
+....................  
+.................... VOID main(){ 
+0004:  CLRF   04
+0005:  BCF    03.7
+0006:  MOVLW  1F
+0007:  ANDWF  03,F
+0008:  CLRF   20
+0009:  BSF    03.5
+000A:  BSF    1F.0
+000B:  BSF    1F.1
+000C:  BSF    1F.2
+000D:  BCF    1F.3
+000E:  MOVLW  07
+000F:  MOVWF  1C
+....................  
+....................       TRISA=0X01;// 0000 0001  
+0010:  MOVLW  01
+0011:  MOVWF  05
+....................       TRISB=0X00;// 0000 0000 
+0012:  CLRF   06
+....................       PORTB=0X00; 
+0013:  BCF    03.5
+0014:  CLRF   06
+....................       PORTA=0X00; 
+0015:  CLRF   05
+....................  
+....................       WHILE(TRUE){ 
+....................        
+....................             IF(bit_test(PORTA,0)==1){ 
+0016:  BTFSS  05.0
+0017:  GOTO   01F
+....................                   CONT++; //INCREMENTAR UNA UNIDAD LA VARIABLE CONTADOR CONT = CONT + 1  
+0018:  INCF   20,F
+....................                   IF (CONT==10) 
+0019:  MOVF   20,W
+001A:  SUBLW  0A
+001B:  BTFSC  03.2
+....................                   CONT=0; 
+001C:  CLRF   20
+....................                   PORTB=CONT; 
+001D:  MOVF   20,W
+001E:  MOVWF  06
+....................                   //WHILE(bit_test(PORTA,0)==1); 
+....................             } 
+....................       } 
+001F:  GOTO   016
+.................... } 
+....................     
+0020:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F31   XT NOWDT PUT NODEBUG NOPROTECT NOBROWNOUT NOLVP NOCPD NOWRT
